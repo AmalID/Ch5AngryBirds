@@ -1,13 +1,16 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class Bird : MonoBehaviour
 {
-public enum BirdState { idle,Thrown}
+    public enum BirdState { idle, Thrown }
     public GameObject Parent;
     public Rigidbody2D Rigidbody;
     public CircleCollider2D Collider;
+
+    public UnityAction OnBirdDestroyed = delegate{};
 
     private BirdState _state;
     private float _minVelocity = 0.0f;
@@ -46,5 +49,10 @@ public enum BirdState { idle,Thrown}
         Collider.enabled = true;
         Rigidbody.bodyType = RigidbodyType2D.Dynamic;
         Rigidbody.velocity = velocity * speed * distance;
+    }
+
+    void OnDestroy()
+    {
+        OnBirdDestroyed();
     }
 }
